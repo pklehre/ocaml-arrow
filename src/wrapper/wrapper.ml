@@ -801,7 +801,7 @@ module Writer = struct
     let release_array _ = if verbose then Stdio.printf "release array\n%!" in
     Release_array_fn_ptr.of_fun release_array
 
-  let () = keep_alive := [Obj.repr release_schema; Obj.repr release_array]
+  let () = keep_alive := [Base.Obj.repr release_schema; Base.Obj.repr release_array]
 
   let release_array_ptr = Ctypes.(coerce Release_array_fn_ptr.t (ptr void) release_array)
 
