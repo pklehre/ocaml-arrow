@@ -68,7 +68,7 @@ let read (type a) t ~column (col_type : a col_type) : a array =
   | Time_ns ->
     (try Wrapper.Column.read_time_ns t ~column with
     | _ ->
-      Wrapper.Column.read_utf8 t ~column |> Array.map ~f:Core.Time_ns.of_string)
+      Wrapper.Column.read_utf8 t ~column |> Array.map ~f:Core.Time_ns_unix.of_string)
   | Span_ns ->
     (try Wrapper.Column.read_span_ns t ~column with
     | _ ->
@@ -97,7 +97,7 @@ let read_opt (type a) t ~column (col_type : a col_type) : a option array =
     (try Wrapper.Column.read_time_ns_opt t ~column with
     | _ ->
       Wrapper.Column.read_utf8_opt t ~column
-      |> Array.map ~f:(Option.map ~f:Core.Time_ns.of_string))
+      |> Array.map ~f:(Option.map ~f:Core.Time_ns_unix.of_string))
   | Span_ns ->
     (try Wrapper.Column.read_span_ns_opt t ~column with
     | _ ->
