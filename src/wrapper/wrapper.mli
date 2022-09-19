@@ -325,4 +325,4 @@ module Builder : sig
 end
 
 (* See comment in wrapper.ml about Flambda 2. *)
-val keep_alive : Obj.t list ref
+val keep_alive : Caml.Obj.t list ref

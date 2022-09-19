@@ -6,20 +6,10 @@ type _ col_type =
   | Float : float col_type
   | Utf8 : string col_type
   | Date : Core.Date.t col_type
-  | Time_ns : Core.Time_ns_unix.of_string)
-  | Span_ns ->
-    (try Wrapper.Column.read_span_ns t ~column with
-    | _ ->
-      Wrapper.Column.read_utf8 t ~column
-      |> Array.map ~f:Core.Time_ns.Span.of_string)
-  | Ofday_ns ->
-    (try Wrapper.Column.read_ofday_ns t ~column with
-    | _ ->
-      Wrapper.Column.read_utf8 t ~column
-      |> Array.map ~f:Core.Time_ns.Ofday.of_string)
-  | Bool ->
-    let bs = Wrapper.Column.read_bitset t ~column in
-    Array.init (Valid.length bs) ~f:(Valid.get bs)
+  | Time_ns : Core.Time_ns.t col_type
+  | Span_ns : Core.Time_ns.Span.t col_type
+  | Ofday_ns : Core.Time_ns.Ofday.t col_type
+  | Bool : bool col_type
 
 let read_opt (type a) t ~column (col_type : a col_type) : a option array =
   match col_type with
@@ -35,7 +25,7 @@ let read_opt (type a) t ~column (col_type : a col_type) : a option array =
     (try Wrapper.Column.read_time_ns_opt t ~column with
     | _ ->
       Wrapper.Column.read_utf8_opt t ~column
-      |> Array.map ~f:(Option.map ~f:Time_ns_unix.of_string))
+      |> Array.map ~f:(Option.map ~f:Core.Time_ns.of_string_with_utc_offset))
   | Span_ns ->
     (try Wrapper.Column.read_span_ns_opt t ~column with
     | _ ->
